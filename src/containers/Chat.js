@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import * as actionTypes from '../store/actions';
 import { connect } from 'react-redux';
-import { auth } from "../services/firebase";
 import { db } from "../services/firebase"
+import {Button, Input } from '@material-ui/core';
 
 export class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          user: auth().currentUser,
           chats: [],
           content: '',
           readError: null,
@@ -19,7 +17,7 @@ export class Chat extends Component {
       }
 
       styles = {
-        root: {
+      root: {
           display: 'flexbox',
           flexDirection: 'column',
           overflow: 'scroll',
@@ -27,13 +25,18 @@ export class Chat extends Component {
         },
         gridList: {
         marginLeft: '30px',
-        marginRight: '30px'
+        marginRight: '30px',
+        height: '500px',
+        overflowY: 'scroll'
         },
         alignLeft: {
             textAlign: 'left'
         },
         alignRight: {
             textAlign: 'right'
+        },
+        textBox: {
+          width: '100%',
         }
       }
     
@@ -61,17 +64,18 @@ export class Chat extends Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        this.setState({ writeError: null });
+        console.log(this.props);
+        this.setState({ ...this.state, writeError: null });
         try {
           await db.ref("my-new-project-182216").push({
             content: this.state.content,
             timestamp: Date.now(),
-            uid: this.state.user.uid,
-            email: auth().currentUser.email
+            uid: this.props.uid,
+            email: this.props.email
           });
-          this.setState({ content: '' });
+          this.setState({ ...this.state, content: '' });
         } catch (error) {
-          this.setState({ writeError: error.message });
+          this.setState({ ...this.state, writeError: error.message });
         }
       }
 
@@ -81,16 +85,16 @@ export class Chat extends Component {
             <div>
                 <div style={this.styles.gridList}>
                     {this.state.chats.map(chat => {
-                    return <p style={chat.email===this.state.user.email?this.styles.alignRight:this.styles.alignLeft} key={chat.timestamp}>{chat.email +' sent: '+ chat.content}</p>
+                    return <p style={chat.email===this.props.email?this.styles.alignRight:this.styles.alignLeft} key={chat.timestamp}>{chat.email +' sent: '+ chat.content}</p>
                     })}
                 </div>
                 <form onSubmit={this.handleSubmit}>
-                    <input onChange={this.handleChange} value={this.state.content}></input>
+                    <Input onChange={this.handleChange} value={this.state.content} style={this.styles.textBox}></Input>
                     {this.state.error ? <p>{this.state.writeError}</p> : null}
-                    <button type="submit">Send</button>
+                    <Button variant="contained" color="primary" type="submit">Send</Button>
                 </form>
                 <div>
-                    Logged in as: <strong>{this.state.user.email}</strong>
+                    Logged in as: <strong>{this.props.email}</strong>
                 </div>
     </div>
         )
@@ -99,15 +103,11 @@ export class Chat extends Component {
 
 const mapStateToProps = state => {
     return {
-        isAuthorized: state.isAuthorized
+        isAuthorized: state.isAuthorized,
+        uid: state.userId,
+        email: state.email
     };
   };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onAddedAuthorization: () => dispatch({type: actionTypes.ADD_AUTHORIZATON}),
-        onRemovedAuthorization: () => dispatch({type: actionTypes.REMOVE_AUTHORIZATON})
-    }
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default connect(mapStateToProps, null)(Chat);

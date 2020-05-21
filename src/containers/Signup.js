@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import {signup} from '../helpers/auth';
-import {Button, Input, Container} from '@material-ui/core';
+import {Button, Input, Grid} from '@material-ui/core';
 import { connect } from 'react-redux';
 
 class Signup extends Component {
@@ -44,7 +44,7 @@ class Signup extends Component {
         <Redirect to='/chat'/> 
         :
           <div>
-          <Container component="span" m={1}>
+          <Grid container direction="column" alignItems="center" justify="center">
           <form onSubmit={this.handleSubmit}>
             <h1>
               Sign Up
@@ -63,7 +63,7 @@ class Signup extends Component {
             <hr></hr>
             <p>Already have an account? <Link to="/login">Login</Link></p>
           </form>
-          </Container>
+          </Grid>
         </div>
         )
     }
