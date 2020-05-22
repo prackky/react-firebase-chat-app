@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import {signup} from '../helpers/auth';
+import {signup} from '../../helpers/auth';
 import {Button, Input, Grid} from '@material-ui/core';
 import { connect } from 'react-redux';
+import '../../App.css';
 
 class Signup extends Component {
     constructor(props) {
@@ -43,7 +44,6 @@ class Signup extends Component {
         this.props.isAuthorized ?
         <Redirect to='/chat'/> 
         :
-          <div>
           <Grid container direction="column" alignItems="center" justify="center">
           <form onSubmit={this.handleSubmit}>
             <h1>
@@ -64,7 +64,6 @@ class Signup extends Component {
             <p>Already have an account? <Link to="/login">Login</Link></p>
           </form>
           </Grid>
-        </div>
         )
     }
 }

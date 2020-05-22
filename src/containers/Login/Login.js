@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {signin} from '../helpers/auth';
+import {signin} from '../../helpers/auth';
 import {Button, Input, Grid} from '@material-ui/core';
-import * as actionTypes from '../store/actions';
+import * as actionTypes from '../../store/actions';
 import {connect} from 'react-redux';
+import '../../App.css';
 
-class Login extends Component {
+export class Login extends Component {
 
     constructor(props) {
         super(props);
@@ -65,7 +66,7 @@ class Login extends Component {
         return (this.props.isAuthorized
             ? <Redirect to='/chat'/>
             :
-                <Grid container direction="column" alignItems="center" justify="center">
+                <Grid container direction="column" alignItems="center" >
                     <form onSubmit={this.handleSubmit}>
                         <h1>
                             Sign In
