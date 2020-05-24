@@ -1,0 +1,27 @@
+.Root {
+    background: linear-gradient(from center, transparent, #FE6B8B 30%, #FF8E53 90%);
+    padding: 10px;
+}
+.GridList {
+    margin-left: 30px;
+    margin-right: 30px;
+    height: 450px;
+    overflow-y: scroll
+}
+.AlignLeft {
+    text-align: left;
+    border-color: #ccc;
+    background-color: #ddd
+}
+.AlignRight {
+    text-align: right;
+    border-color: #bbb;
+    background-color: #eee
+}
+.Sent {
+    font-size: x-small;
+    color: #aaa
+}
+.TextBox {
+    width: 100%
+}

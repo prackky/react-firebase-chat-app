@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react';
 
 const styles = {
     root: {
@@ -9,14 +9,12 @@ const styles = {
         textAlign: 'center'
     }
 }
-class Home extends Component {
-    render() {
-        return (
-            <div style={styles.root}>
-                <p>Welcome to Chat POC.</p>
-            </div>
-        )
-    }
+const Home = (props) => {
+    return (
+        <div style={styles.root}>
+            <p>Welcome to Chat POC.</p>
+        </div>
+    )
 }
 
 export default Home;

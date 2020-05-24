@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import {signin} from '../../helpers/auth';
 import {Button, Input, Grid} from '@material-ui/core';
-import * as actionTypes from '../../store/actions';
+import * as authActions from '../../store/authActions';
 import {connect} from 'react-redux';
 import '../../App.css';
 
@@ -21,19 +21,10 @@ export class Login extends Component {
     }
 
     handleChange = (event) => {
-        const type = event.target.type;
-        const value = event.target.value;
-        if (type === 'email') {
-            this.setState({
-                ...this.state,
-                email: value
-            });
-        } else if (type === 'password') {
-            this.setState({
-                ...this.state,
-                password: value
-            });
-        }
+        this.setState({
+            ...this.state,
+            [event.target.type]: event.target.value
+        });
     }
     async handleSubmit(event) {
         event.preventDefault();
@@ -43,14 +34,13 @@ export class Login extends Component {
                 ...this.state,
                 message: "Login successful."
             });
-            //console.log(response.user.uid, response.user.xa);
             this
                 .props
                 .onAddedAuthorization(response.user.uid, response.user.xa, this.state.email);
             this
                 .props
                 .history
-                .replace('/chat');
+                .push('/chat');
         }).catch(error => {
             //console.log(error);
             this.setState({
@@ -65,40 +55,39 @@ export class Login extends Component {
     render() {
         return (this.props.isAuthorized
             ? <Redirect to='/chat'/>
-            :
-                <Grid container direction="column" alignItems="center" >
-                    <form onSubmit={this.handleSubmit}>
-                        <h1>
-                            Sign In
-                        </h1>
-                        <div>
-                            <Input
-                                placeholder="Email"
-                                name="email"
-                                type="email"
-                                onChange={this.handleChange}
-                                value={this.state.email}></Input>
-                        </div>
-                        <div>
-                            <Input
-                                placeholder="Password"
-                                name="password"
-                                onChange={this.handleChange}
-                                value={this.state.password}
-                                type="password"></Input>
-                        </div>
-                        <div>
-                            {this.state.error
-                                ? <p>{this.state.error}</p>
-                                : null}
-                            <Button type="submit" variant="contained" color="primary">Sign in</Button>
-                        </div>
-                        <hr/>
-                        <p>Don't have an account?
-                            <Link to="/signup">Sign up</Link>
-                        </p>
-                    </form>
-                </Grid>)
+            : <Grid container direction="column" alignItems="center">
+                <form onSubmit={this.handleSubmit}>
+                    <h1>
+                        Sign In
+                    </h1>
+                    <div>
+                        <Input
+                            placeholder="Email"
+                            name="email"
+                            type="email"
+                            onChange={this.handleChange}
+                            value={this.state.email}></Input>
+                    </div>
+                    <div>
+                        <Input
+                            placeholder="Password"
+                            name="password"
+                            onChange={this.handleChange}
+                            value={this.state.password}
+                            type="password"></Input>
+                    </div>
+                    <div>
+                        {this.state.error
+                            ? <p>{this.state.error}</p>
+                            : null}
+                        <Button type="submit" variant="contained" color="primary">Sign in</Button>
+                    </div>
+                    <hr/>
+                    <p>Don't have an account?
+                        <Link to="/signup">Sign up</Link>
+                    </p>
+                </form>
+            </Grid>)
     }
 }
 
@@ -108,7 +97,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddedAuthorization: (userId, token, email) => dispatch({type: actionTypes.ADD_AUTHORIZATON, userId: userId, token: token, email: email})
+        onAddedAuthorization: (userId, token, email) => dispatch(authActions.addAuth(token, userId, email))
     }
 };
 
