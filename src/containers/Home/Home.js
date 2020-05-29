@@ -1,4 +1,6 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
 
 const styles = {
     root: {
@@ -10,11 +12,16 @@ const styles = {
     }
 }
 const Home = (props) => {
-    return (
-        <div style={styles.root}>
+    console.log(props.isAuthorized);
+    return (props.isAuthorized
+        ? <Redirect to='/chat'/>
+        : <div style={styles.root}>
             <p>Welcome to Chat POC.</p>
-        </div>
-    )
+        </div>)
 }
 
-export default Home;
+const mapStateToProps = state => {
+    return {isAuthorized: state.isAuthorized};
+};
+
+export default connect(mapStateToProps, null)(Home);

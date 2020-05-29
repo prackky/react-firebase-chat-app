@@ -22,10 +22,17 @@ export class App extends Component {
                 <Route exact path="/" component={Home}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/signup" component={Signup}/>
-                <Route path="/chat" component={Chat}/>
                 <Route path="*" component={NotFound}/>
             </Switch>
         )
+
+        if(this.props.isAuthorized) {
+           routes = <Switch>
+               <Route exact path="/" component={Home}/>
+                <Route path="/chat" component={Chat}/>
+                <Route path="*" component={NotFound}/>
+            </Switch>
+        }
         return (
             <BrowserRouter>
                 <Navigation
