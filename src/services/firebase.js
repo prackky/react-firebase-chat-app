@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
 const config = {
-    apiKey: "AIzaSyCNGqgQXX4oSb20gwXdsvMj5HaWAisfiH4",
+    apiKey: "API_KEY",
     authDomain: "localhost",
     databaseURL: "https://my-new-project-182216.firebaseio.com/"
   };
